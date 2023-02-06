@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import initialState from './initialState';
-
 import {
   StyledContactForm,
   StyledLabelForm,
@@ -11,21 +9,33 @@ import {
 } from './ContactForm.styled';
 
 const ContactForm = ({ onSubmit }) => {
-  const [state, setState] = useState({ ...initialState });
-
-  const { name, number } = state;
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
-    setState(prevState => {
-      return { ...prevState, [name]: value };
-    });
+    switch (name) {
+      case 'name':
+        setName(value);
+        break;
+      case 'number':
+        setNumber(value);
+        break;
+
+      default:
+        break;
+    }
   };
 
   const handleSubmit = event => {
     event.preventDefault();
     onSubmit({ name, number });
-    setState({ ...initialState });
+    reset();
+  };
+
+  const reset = () => {
+    setName('');
+    setNumber('');
   };
 
   return (
